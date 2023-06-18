@@ -1,4 +1,5 @@
-package main
+package utils
+
 
 func Must[T any](v T, err error) T {
 	if err != nil {

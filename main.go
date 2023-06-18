@@ -3,17 +3,25 @@ package main
 import (
 	"net/http"
 	"os"
+
+	"github.com/abihf/modemexporter/modem"
+	_ "github.com/abihf/modemexporter/modem/huawei/eg8141A5"
 )
 
 func main() {
-	server := Server{
-		Modem:    &Huawei{URL: os.Getenv("MODEM_URL")},
-		User:     os.Getenv("MODEM_USER"),
-		Password: os.Getenv("MODEM_PASSWORD"),
+	m, err := modem.FromEnv()
+	if err != nil {
+		panic(err)
 	}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-	http.ListenAndServe(":"+port, &server)
+
+	server := modem.Server{Modem: m}
+	err = http.ListenAndServe(":"+port, &server)
+	if err != nil {
+		panic(err)
+	}
 }
