@@ -7,7 +7,11 @@ import (
 
 var registration = map[string]map[string]RegisterCallback{}
 
-type RegisterCallback func(url, user, pass string) Modem
+var EnvURL = os.Getenv("MODEM_URL")
+var EnvUser = os.Getenv("MODEM_USER")
+var EnvPassword = os.Getenv("MODEM_PASSWORD")
+
+type RegisterCallback func() Modem
 
 func Register(info *Info, cb RegisterCallback) {
 	modelMap := registration[info.Vendor]
@@ -29,5 +33,5 @@ func FromEnv() (Modem, error) {
 	if cb == nil {
 		return nil, fmt.Errorf("Modem vendor %s model %s not found", vendor, model)
 	}
-	return cb(os.Getenv("MODEM_URL"), os.Getenv("MODEM_USER"), os.Getenv("MODEM_PASSWORD")), nil
+	return cb(), nil
 }

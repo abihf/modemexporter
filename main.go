@@ -6,6 +6,7 @@ import (
 
 	"github.com/abihf/modemexporter/modem"
 	_ "github.com/abihf/modemexporter/modem/huawei/eg8141A5"
+	_ "github.com/abihf/modemexporter/modem/huawei/eg8141A5v5"
 )
 
 func main() {
